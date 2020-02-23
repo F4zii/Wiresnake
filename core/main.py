@@ -34,7 +34,7 @@ try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         result = sock.connect_ex((remote_server_ip, port))
         if result == 0:
-            print("[+] Port {}: 	 Open".format(port))
+            print("[+] Port {}:\t\tOpen".format(port))
         sock.close()
 
 except KeyboardInterrupt:
