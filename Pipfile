@@ -3,23 +3,10 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-[dev-packages]
-coverage = "~=4.5"
-flake8 = "~=3.7"
-flake8-annotations = "~=2.0"
-flake8-bugbear = "~=19.8"
-flake8-docstrings = "~=1.4"
-flake8-import-order = "~=0.18"
-flake8-string-format = "~=0.2"
-flake8-tidy-imports = "~=2.0"
-flake8-todo = "~=0.7"
-pre-commit = "~=1.18"
-safety = "~=1.8"
 
 [scripts]
-start = "python -m main"
-lint = "python -m flake8"
-precommit = "pre-commit install"
-test = "coverage run -m unittest"
+lint = "black '.'"
+
 
 [packages]
+scapy = "*"
